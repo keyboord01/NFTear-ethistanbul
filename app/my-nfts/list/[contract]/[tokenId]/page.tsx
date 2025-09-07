@@ -92,17 +92,17 @@ export default function ListNFTPage() {
         maxSellablePercentage: percentage,
         registryAddress: REGISTRY_ADDRESS,
       }, (u: ListingProgress) => {
-        console.log('🎯 UI Progress callback received:', u)
+        
         if (u.status === 'start') {
-          console.log('📱 Setting current step to:', u.step)
+          
           setCurrentStep(u.step)
         }
         if (u.txHash) {
-          console.log('📱 Adding tx hash:', u.step, u.txHash)
+          
           setTxHashes(prev => ({ ...prev, [u.step]: u.txHash as string }))
         }
         if (u.status === 'success' && u.step === 'registerInRegistry') {
-          console.log('📱 Setting step to done')
+          
           setCurrentStep('done')
         }
       })
@@ -116,12 +116,12 @@ export default function ListNFTPage() {
 
   const handleSellShares = async () => {
     
-    console.log('🔸 Sell Logic Preview:')
-    console.log(`User wants to sell: ${percentage} shares`)
-    console.log(`User owns: ${userOwnedShares} shares (${userOwnershipPercent}% of total)`)
-    console.log(`Price per share: ${pricePerShare} ETH`)
-    console.log(`Total value: ${totalValue.toFixed(4)} ETH`)
-    console.log(`User can sell up to: ${userOwnedShares} shares`)
+    
+    
+    
+    
+    
+    
     
     
     

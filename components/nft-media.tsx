@@ -49,7 +49,7 @@ export function NFTMedia({
 
 
   const handleVideoLoad = () => {
-    console.log('✅ Video loaded successfully')
+    
     setVideoLoading(false)
     onLoadingComplete?.()
     if (videoRef.current) {
@@ -63,13 +63,13 @@ export function NFTMedia({
   }
 
   const handleImageError = () => {
-    console.log('🎥 Image failed to load, trying as video:', resolvedSrc)
+    
     setImageError(true)
     setMediaType('video')
   }
 
   const handleVideoError = () => {
-    console.log('❌ Video also failed to load, using fallback:', resolvedSrc)
+    
     setVideoError(true)
     setVideoLoading(false)
   }
@@ -149,7 +149,7 @@ export function NFTMedia({
         onLoadingComplete={handleImageLoad}
         onError={() => {
           if (!imageError) {
-            console.log('🎥 Image failed to load, using fallback:', resolvedSrc)
+            
             setImageError(true)
           }
         }}

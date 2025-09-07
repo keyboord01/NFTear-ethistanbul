@@ -76,7 +76,7 @@ export default function NFTPurchasePage() {
         setLoading(true)
         setError(null)
         
-        console.log(`🚀 Starting to load NFT data for contract: ${contractAddress}`)
+        
         
         if (!contractAddress || !contractAddress.startsWith('0x')) {
           console.error(' Invalid contract address format:', contractAddress)
@@ -84,7 +84,7 @@ export default function NFTPurchasePage() {
           return
         }
         
-        console.log(' Contract address is valid, proceeding with data loading...')
+        
         
         
         const [nftData, comprehensiveContractData] = await Promise.all([
@@ -93,16 +93,16 @@ export default function NFTPurchasePage() {
         ])
         
         if (!nftData) {
-          console.log(' No data returned from contract - this could mean:')
-          console.log('  1. Contract does not exist')
-          console.log('  2. Contract is not deployed on this network')
-          console.log('  3. Contract does not have an NFT associated with it')
-          console.log('  4. Contract functions are not implemented correctly')
+          
+          
+          
+          
+          
           setError('No NFT data found for this contract')
           return
         }
         
-        console.log('🎉 Successfully loaded NFT data, setting state...')
+        
         setNft(nftData)
         setComprehensiveData(comprehensiveContractData)
       } catch (err: any) {
@@ -115,7 +115,7 @@ export default function NFTPurchasePage() {
         setError(`Failed to load NFT data: ${err.message || 'Unknown error'}`)
       } finally {
         setLoading(false)
-        console.log('📊 Loading process completed')
+        
       }
     }
 
@@ -132,13 +132,13 @@ export default function NFTPurchasePage() {
       try {
         
         const percentage = Math.round((sharesToBuy / nft.totalShares) * 100)
-        console.log(`💰 Calculating cost for ${sharesToBuy} shares = ${percentage}%`)
+        
         
         const cost = await calculateCost(percentage, contractAddress)
         if (cost) {
           const formattedCost = formatETHAmount(parseFloat(cost))
           setTotalCost(formattedCost)
-          console.log(` Cost calculated: ${formattedCost} ETH for ${percentage}%`)
+          
 
           
           try {
@@ -159,7 +159,7 @@ export default function NFTPurchasePage() {
         const fallbackCost = formatETHAmount(fallbackCostNumber)
         
         setTotalCost(fallbackCost)
-        console.log(`⚠️ Using fallback cost calculation: ${fallbackCost} ETH`)
+        
       }
     }
 
@@ -176,15 +176,15 @@ export default function NFTPurchasePage() {
       setPurchasing(true)
       
       const percentage = Math.round((sharesToBuy / nft.totalShares) * 100)
-      console.log(`🛒 Attempting to purchase ${sharesToBuy} shares = ${percentage}%`)
       
       
-      console.log('🔍 Running comprehensive pre-purchase checks...')
+      
+      
       
       try {
         
         const status = await getContractStatus(contractAddress)
-        console.log('📊 Contract Status:', status)
+        
         
         if (!status || !status.nftInContract || !status.nftTransferredFlag) {
           alert(' NFT has not been transferred to the manager contract yet. Please wait for the transfer to complete before buying.')
@@ -193,7 +193,7 @@ export default function NFTPurchasePage() {
         
         
         const available = await getAvailableForSale(contractAddress)
-        console.log(`📊 Available for sale: ${available}%`)
+        
         
         if (percentage > available) {
           alert(` Cannot buy ${percentage}%. Only ${available}% available for sale.`)
@@ -202,18 +202,18 @@ export default function NFTPurchasePage() {
         
         
         const userOwnership = await getOwnershipPercentage(address!, contractAddress)
-        console.log(`📊 User current ownership: ${userOwnership}%`)
+        
         
         
         const exactCost = await calculateCost(percentage, contractAddress)
-        console.log(`💰 Exact cost for ${percentage}%: ${exactCost} ETH`)
+        
         
         if (!exactCost) {
           alert(' Could not calculate purchase cost')
           return
         }
         
-        console.log(' All pre-purchase checks passed')
+        
         
       } catch (statusError) {
         console.error(' Pre-purchase check failed:', statusError)
@@ -222,7 +222,7 @@ export default function NFTPurchasePage() {
       }
       
       
-      console.log(`🔍 Validating purchase: ${percentage}% for address ${address}`)
+      
       const canBuy = await canBuyPercentage(percentage, contractAddress)
       if (!canBuy) {
         
@@ -245,7 +245,7 @@ Try purchasing a smaller percentage or check available shares.`)
         return
       }
 
-      console.log(' Purchase validation passed')
+      
 
       const result = await buyShares(percentage, contractAddress)
       
@@ -309,7 +309,7 @@ Try purchasing a smaller percentage or check available shares.`)
     }
 
     try {
-      console.log(`🧪 Testing contract queries for address: ${testAddress}`)
+      
       const results = await testQueryFunctions(contractAddress, testAddress, testPercentage)
       
       if (results) {
@@ -342,7 +342,7 @@ ${results.isOwner ?
         alert(resultMessage)
         
         
-        console.log('🎯 Query Results:', results)
+        
       } else {
         alert(' Failed to query contract. The contract may not be deployed or accessible.')
       }
@@ -374,7 +374,7 @@ Check the console for more details.`)
       if (refreshedNFTData) {
         setNft(refreshedNFTData)
         setComprehensiveData(refreshedComprehensiveData)
-        console.log('🔄 Data refreshed successfully')
+        
       }
     } catch (err: any) {
       console.error('Error refreshing data:', err)

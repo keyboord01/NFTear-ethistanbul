@@ -150,7 +150,6 @@ export function BuySharesModal({
   const totalCost = (parseFloat(nft.pricePerShare) * sharesToBuy).toFixed(4)
 
   const handleBuy = () => {
-    console.log(`Buying ${sharesToBuy} shares of ${nft.name} for ${totalCost} ETH`)
     alert(`Purchase initiated: ${sharesToBuy} shares for ${totalCost} ETH`)
     onClose()
   }

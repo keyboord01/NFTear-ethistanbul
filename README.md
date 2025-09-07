@@ -1,39 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NFTear - Fractional NFT Marketplace
+
+A decentralized marketplace for fractional NFT ownership, built with Next.js and deployed on Ethereum Sepolia testnet.
+
+## Features
+
+- 🎨 Fractionalize NFTs into tradeable shares
+- 💰 Buy and sell NFT fractions
+- 🔗 Maintain all NFT utilities (airdrops, yields, exclusive access)
+- 🌐 Decentralized registry system
+- 📱 Modern, responsive UI
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or yarn
+- MetaMask or compatible Web3 wallet
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd nftshare
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Edit `.env.local` and add your values:
+```env
+NEXT_PUBLIC_REGISTRY_ADDRESS=0x003a6F78dd9EDf8721874e07C68F12e95b5458CD
+NEXT_PUBLIC_MORALIS_API_KEY=your_moralis_api_key_here
+```
 
-## Learn More
+4. Run the development server:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `NEXT_PUBLIC_REGISTRY_ADDRESS` | Smart contract registry address on Sepolia | Yes |
+| `NEXT_PUBLIC_MORALIS_API_KEY` | Moralis API key for NFT data | Optional |
 
-## Deploy on Vercel
+## Deployment on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Quick Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# frontend
-# NFTear-ethistanbul
-# NFTear-ethistanbul
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=<your-repo-url>)
+
+### Manual Deployment
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Set environment variables in Vercel dashboard:
+   - `NEXT_PUBLIC_REGISTRY_ADDRESS`
+   - `NEXT_PUBLIC_MORALIS_API_KEY`
+4. Deploy
+
+### Environment Variables in Vercel
+
+1. Go to your Vercel project dashboard
+2. Navigate to Settings > Environment Variables
+3. Add the required variables:
+   - `NEXT_PUBLIC_REGISTRY_ADDRESS`: `0x003a6F78dd9EDf8721874e07C68F12e95b5458CD`
+   - `NEXT_PUBLIC_MORALIS_API_KEY`: Your Moralis API key
+
+## Troubleshooting
+
+### 404 Error on Vercel
+
+If you're getting a 404 error on Vercel deployment:
+
+1. **Check Environment Variables**: Ensure all required environment variables are set in Vercel dashboard
+2. **Check Build Logs**: Look for any build errors in Vercel deployment logs
+3. **Verify Network**: Make sure you're connected to Sepolia testnet
+4. **Registry Contract**: Verify the registry contract address is correct
+
+### Common Issues
+
+- **"Registry address not configured"**: Set `NEXT_PUBLIC_REGISTRY_ADDRESS` environment variable
+- **NFTs not loading**: Check Moralis API key and network connection
+- **Web3 connection issues**: Ensure MetaMask is connected to Sepolia testnet
+
+## Architecture
+
+- **Frontend**: Next.js 15 with TypeScript
+- **Styling**: Tailwind CSS
+- **Web3**: Wagmi + Viem
+- **NFT Data**: Moralis API
+- **Network**: Ethereum Sepolia Testnet
+- **Deployment**: Vercel
+
+## Smart Contracts
+
+- **Registry Contract**: `0x003a6F78dd9EDf8721874e07C68F12e95b5458CD`
+- **Network**: Sepolia Testnet
+- **Chain ID**: 11155111

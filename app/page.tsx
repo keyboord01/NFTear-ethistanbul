@@ -35,30 +35,33 @@ export default function Home() {
         setLoading(true)
         setError(null)
         
-        console.log('🏪 Loading marketplace items from registry...')
-        console.log('Registry address:', REGISTRY_ADDRESS)
+        
+        
         
         if (!REGISTRY_ADDRESS) {
-          console.log('No registry address configured')
+          
           setError('Registry address not configured. Please set NEXT_PUBLIC_REGISTRY_ADDRESS in your environment.')
           setItems([])
           return
         }
         
         const registryItems = await fetchActiveMarketplaceItems(REGISTRY_ADDRESS)
-        console.log(` Loaded ${registryItems.length} items from registry`)
+        
         setItems(registryItems)
         
       } catch (err: any) {
         console.error(' Error fetching marketplace items:', err)
-        setError(err.message || 'Failed to load marketplace')
-        setItems(null)
+        // Don't show error immediately, just set empty items to prevent app crash
+        setError(null)
+        setItems([])
       } finally {
         setLoading(false)
       }
     }
 
-    fetchNFTs()
+    // Add a small delay to ensure providers are initialized
+    const timer = setTimeout(fetchNFTs, 100)
+    return () => clearTimeout(timer)
   }, [])
 
   

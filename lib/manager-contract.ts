@@ -472,7 +472,7 @@ export async function getNFTInfo(contractAddress: string = DEFAULT_MANAGER_CONTR
       totalSold: Number(totalSold)
     }
   } catch (error) {
-    console.error('Error getting NFT info:', error)
+    // Error getting NFT info
     return null
   }
 }
@@ -493,7 +493,7 @@ export async function getContractStatus(contractAddress: string = DEFAULT_MANAGE
       currentNFTOwner
     }
   } catch (error) {
-    console.error('Error getting contract status:', error)
+    // Error getting contract status
     return null
   }
 }
@@ -514,7 +514,7 @@ export async function getAllOwners(contractAddress: string = DEFAULT_MANAGER_CON
       shares: Number(percentages[index])
     }))
   } catch (error) {
-    console.error('Error getting all owners:', error)
+    // Error getting all owners
     return []
   }
 }
@@ -536,13 +536,13 @@ export async function getOwnershipBreakdown(contractAddress: string = DEFAULT_MA
       remainingAvailable: Number(remainingAvailable)
     }
   } catch (error) {
-    console.error('Error getting ownership breakdown:', error)
+    // Error getting ownership breakdown
     return null
   }
 }
 
 export async function calculateCost(percentage: number, contractAddress: string = DEFAULT_MANAGER_CONTRACT_ADDRESS): Promise<string | null> {
-  console.log(`💰 Calculating cost for ${percentage}% from contract: ${contractAddress}`)
+  
   try {
     const result = await readContract(config, {
       address: contractAddress as `0x${string}`,
@@ -552,7 +552,7 @@ export async function calculateCost(percentage: number, contractAddress: string 
     })
 
     const cost = formatEther(result as bigint)
-    console.log(` Cost calculated: ${cost} ETH for ${percentage}%`)
+    
     return cost
   } catch (error) {
     console.error(' Error calculating cost:', error)
@@ -687,7 +687,7 @@ export async function getFractionalNFTForMarketplace(contractAddress: string): P
   pricePerShare: string
   creator: string
 } | null> {
-  console.log(`🏪 Loading NFT for marketplace from contract: ${contractAddress}`)
+  
   
   try {
     const fractionalNFT = await getFractionalNFTData(contractAddress)
@@ -706,7 +706,7 @@ export async function getFractionalNFTForMarketplace(contractAddress: string): P
       creator: fractionalNFT.originalSeller
     }
 
-    console.log(' Marketplace NFT data prepared:', marketplaceNFT)
+    
     return marketplaceNFT
   } catch (error) {
     console.error(' Error getting fractional NFT for marketplace:', error)
@@ -756,7 +756,7 @@ export interface ComprehensiveContractData {
 
 
 export async function loadComprehensiveContractData(contractAddress: string): Promise<ComprehensiveContractData | null> {
-  console.log(`📊 Loading comprehensive contract data from: ${contractAddress}`)
+  
   
   try {
    
@@ -765,7 +765,7 @@ export async function loadComprehensiveContractData(contractAddress: string): Pr
       return null
     }
 
-    console.log('📡 Step 1: Loading all contract data in parallel...')
+    
     
    
     const [
@@ -817,8 +817,8 @@ export async function loadComprehensiveContractData(contractAddress: string): Pr
       return null
     }
 
-    console.log(' Core contract data loaded successfully')
-    console.log('📡 Step 2: Loading shares token information...')
+    
+    
 
    
     let sharesTokenInfo = {
@@ -861,22 +861,22 @@ export async function loadComprehensiveContractData(contractAddress: string): Pr
         totalSupply: formatEther(totalSupply as bigint)
       }
 
-      console.log(' Shares token info loaded:', sharesTokenInfo)
+      
     } catch (err) {
-      console.log("⚠️ Could not load shares token info:", (err as Error).message)
+      
     }
 
-    console.log('📡 Step 3: Loading NFT metadata...')
+    
     let metadata: NFTMetadata | undefined
 
     try {
       const fetchedMetadata = await fetchNFTMetadata(nftInfo.nftContract, nftInfo.id)
       if (fetchedMetadata) {
         metadata = fetchedMetadata
-        console.log(' NFT metadata loaded:', metadata.name)
+        
       }
     } catch (err) {
-      console.log('⚠️ Could not load NFT metadata:', (err as Error).message)
+      
     }
 
     const comprehensiveData: ComprehensiveContractData = {
@@ -912,7 +912,7 @@ export async function loadComprehensiveContractData(contractAddress: string): Pr
       metadata
     }
 
-    console.log('🎉 Comprehensive contract data loaded successfully:', comprehensiveData)
+    
     return comprehensiveData
 
   } catch (error) {
@@ -923,7 +923,7 @@ export async function loadComprehensiveContractData(contractAddress: string): Pr
 
 
 export async function getFractionalNFTData(contractAddress: string): Promise<FractionalNFT | null> {
-  console.log(`🔍 Loading fractional NFT data from contract: ${contractAddress}`)
+  
   
   try {
    
@@ -932,35 +932,30 @@ export async function getFractionalNFTData(contractAddress: string): Promise<Fra
       return null
     }
 
-    console.log('📡 Step 1: Getting basic NFT info...')
+    
    
     const nftInfo = await getNFTInfo(contractAddress)
     if (!nftInfo) {
       console.error(' Failed to get NFT info from contract')
       return null
     }
-    console.log(' NFT Info received:', nftInfo)
+    
 
-    console.log('📡 Step 2: Getting ownership data...')
+    
    
     const shareHolders = await getAllOwners(contractAddress)
     const ownershipBreakdown = await getOwnershipBreakdown(contractAddress)
     const availableForSale = await getAvailableForSale(contractAddress)
     
-    console.log(' Ownership data received:', {
-      shareHolders: shareHolders.length,
-      ownershipBreakdown,
-      availableForSale
-    })
-
-    console.log('📡 Step 3: Fetching NFT metadata...')
+ 
+    
    
     const metadata = await fetchNFTMetadata(nftInfo.nftContract, nftInfo.id)
     if (!metadata) {
       console.error(' Failed to fetch NFT metadata')
       return null
     }
-    console.log(' Metadata received:', metadata)
+    
 
    
     const totalShares = 100
@@ -982,7 +977,7 @@ export async function getFractionalNFTData(contractAddress: string): Promise<Fra
       shareHolders
     }
 
-    console.log('🎉 Successfully loaded fractional NFT data:', fractionalNFT)
+    
     return fractionalNFT
   } catch (error) {
     console.error(' Error getting fractional NFT data from contract', contractAddress, ':', error)
@@ -1045,18 +1040,18 @@ export async function buyShares(percentage: number, contractAddress: string, gas
   maxFeePerGas?: bigint;
   maxPriorityFeePerGas?: bigint;
 }): Promise<{ success: boolean; txHash?: string; error?: string; gasUsed?: string }> {
-  console.log(`💰 Attempting to buy ${percentage}% shares from contract: ${contractAddress}`)
+  
   try {
-    console.log('🔍 Step 1: Checking if purchase is valid...')
+    
    
     const canBuy = await canBuyPercentage(percentage, contractAddress)
     if (!canBuy) {
       console.error(' Cannot buy this percentage - contract validation failed')
       return { success: false, error: 'Cannot buy this percentage' }
     }
-    console.log(' Purchase validation passed')
+    
 
-    console.log('💰 Step 2: Calculating cost...')
+    
    
     const costWei = await calculateCostWei(percentage, contractAddress)
     if (costWei === null) {
@@ -1064,9 +1059,9 @@ export async function buyShares(percentage: number, contractAddress: string, gas
       return { success: false, error: 'Could not calculate cost' }
     }
 
-    console.log(` Cost calculated (wei): ${costWei.toString()}`)
+    
 
-    console.log('🚀 Step 3: Executing purchase transaction...')
+    
     
    
     const txConfig: any = {
@@ -1082,30 +1077,23 @@ export async function buyShares(percentage: number, contractAddress: string, gas
     if (gasOptions) {
       if (gasOptions.gasLimit) {
         txConfig.gas = gasOptions.gasLimit
-        console.log(`⛽ Using custom gas limit: ${gasOptions.gasLimit}`)
+        
       }
       if (gasOptions.maxFeePerGas) {
         txConfig.maxFeePerGas = gasOptions.maxFeePerGas
-        console.log(`⛽ Using custom max fee per gas: ${formatEther(gasOptions.maxFeePerGas)} ETH`)
+        
       }
       if (gasOptions.maxPriorityFeePerGas) {
         txConfig.maxPriorityFeePerGas = gasOptions.maxPriorityFeePerGas
-        console.log(`⛽ Using custom priority fee: ${formatEther(gasOptions.maxPriorityFeePerGas)} ETH`)
       }
     }
 
-    console.log('📋 Transaction config:', {
-      address: txConfig.address,
-      function: 'buyPercentage',
-      args: txConfig.args,
-      value: costWei.toString(),
-      gas: txConfig.gas.toString()
-    })
+    
 
    
     const hash = await writeContract(config, txConfig)
 
-    console.log(`🎉 Purchase successful! Transaction hash: ${hash}`)
+    
     return { success: true, txHash: hash }
   } catch (error: any) {
     console.error(' Error buying shares:', error)
@@ -1142,7 +1130,7 @@ export async function estimateGasForPurchase(
   error?: string;
 }> {
   try {
-    console.log(`⛽ Estimating gas for ${percentage}% purchase...`)
+    
     
    
     const costStr = await calculateCost(percentage, contractAddress)
@@ -1167,9 +1155,9 @@ export async function estimateGasForPurchase(
     const gasPrice = await client.getGasPrice()
     const gasCost = estimatedGas * gasPrice
 
-    console.log(`⛽ Estimated gas: ${estimatedGas} units`)
-    console.log(`⛽ Estimated gas price: ${formatEther(gasPrice)} ETH (per unit)`)
-    console.log(`⛽ Estimated gas cost: ${formatEther(gasCost)} ETH`)
+    
+    
+    
 
     return {
       gasEstimate: estimatedGas.toString(),
@@ -1230,7 +1218,7 @@ export async function testQueryFunctions(
   canBuyPercentage: boolean
   sharesForPercentage: string
 } | null> {
-  console.log(`🧪 Testing query functions for ${testAddress} with ${testPercentage}%`)
+  
   
   if (!contractAddress || !testAddress) {
     console.error(' Missing contract address or test address')
@@ -1278,7 +1266,7 @@ export async function testQueryFunctions(
       sharesForPercentage: formatEther(sharesForPercentage as bigint)
     }
 
-    console.log(' Query test results:', results)
+    
     return results
 
   } catch (error) {
@@ -1289,7 +1277,7 @@ export async function testQueryFunctions(
 
 
 export async function refreshContractData(contractAddress: string): Promise<ComprehensiveContractData | null> {
-  console.log(`🔄 Refreshing contract data for: ${contractAddress}`)
+  
   return await loadComprehensiveContractData(contractAddress)
 }
 
@@ -1310,51 +1298,39 @@ export async function deployManagerContract(params: {
   nftPriceWei: bigint
   maxSellablePercentage: bigint
 }): Promise<{ address: `0x${string}`; txHash: `0x${string}` }> {
-  console.log('🚀 Starting Manager deployment with params:', {
-    nftContract: params.nftContract,
-    tokenId: params.tokenId.toString(),
-    nftPriceWei: params.nftPriceWei.toString(),
-    maxSellablePercentage: params.maxSellablePercentage.toString(),
-  })
-
+  
   const bytecode = await fetchManagerBytecode()
-  console.log('📄 Bytecode loaded, length:', bytecode.length)
 
   const wallet = await getWalletClient(config)
   if (!wallet) throw new Error('Wallet not connected')
-  console.log('💳 Wallet client ready, account:', wallet.account?.address)
 
  
-  console.log('🔨 Calling deployContract...')
   const hash = await deployContract(wallet, {
     abi: MANAGER_ABI as unknown as any,
     bytecode,
     args: [params.nftContract, params.tokenId, params.nftPriceWei, params.maxSellablePercentage],
   })
-  console.log('📝 Deploy transaction sent, hash:', hash)
+  
 
   const publicClient = getPublicClient(config)
-  console.log('⏳ Waiting for deployment receipt...')
+  
   const receipt = await publicClient.waitForTransactionReceipt({ hash })
-  console.log('📋 Deployment receipt received:', receipt)
+  
 
   const address = receipt.contractAddress as `0x${string}`
   if (!address) throw new Error('No contract address in receipt')
-  console.log(' Manager deployed successfully at:', address)
+  
   return { address, txHash: hash }
 }
 
 export async function approveNFTForManager(nftContract: `0x${string}`, tokenId: bigint, managerAddress: `0x${string}`): Promise<`0x${string}`> {
-  console.log('👍 Starting NFT approval:', {
-    nftContract,
-    tokenId: tokenId.toString(),
-    managerAddress,
-  })
+  
+
 
  
   const publicClient = getPublicClient(config)
   const wallet = await getWalletClient(config)
-  console.log('🔍 Simulating approve transaction...')
+  
   const simulation = await publicClient.simulateContract({
     address: nftContract,
     abi: ERC721_ABI,
@@ -1362,9 +1338,9 @@ export async function approveNFTForManager(nftContract: `0x${string}`, tokenId: 
     args: [managerAddress, tokenId],
     account: wallet?.account,
   })
-  console.log(' Approve simulation successful, gas:', simulation.request.gas?.toString())
+  
 
-  console.log('📝 Sending approve transaction...')
+  
   const hash = await writeContract(config, {
     address: nftContract,
     abi: ERC721_ABI,
@@ -1372,23 +1348,20 @@ export async function approveNFTForManager(nftContract: `0x${string}`, tokenId: 
     args: [managerAddress, tokenId],
     gas: simulation.request.gas,
   })
-  console.log('📝 Approve transaction sent, hash:', hash)
+  
 
-  console.log('⏳ Waiting for approve receipt...')
+  
   await publicClient.waitForTransactionReceipt({ hash })
-  console.log(' Approve transaction confirmed')
+  
   return hash
 }
 
 export async function setManagerRegistry(managerAddress: `0x${string}`, registryAddress: `0x${string}`): Promise<`0x${string}`> {
-  console.log('📋 Starting registry setup:', {
-    managerAddress,
-    registryAddress,
-  })
+  
 
   const publicClient = getPublicClient(config)
   const wallet = await getWalletClient(config)
-  console.log('🔍 Simulating setNFTRegistry transaction...')
+  
   const simulation = await publicClient.simulateContract({
     address: managerAddress,
     abi: MANAGER_ABI,
@@ -1396,9 +1369,9 @@ export async function setManagerRegistry(managerAddress: `0x${string}`, registry
     args: [registryAddress],
     account: wallet?.account,
   })
-  console.log(' Registry simulation successful, gas:', simulation.request.gas?.toString())
+  
 
-  console.log('📝 Sending setNFTRegistry transaction...')
+  
   const hash = await writeContract(config, {
     address: managerAddress,
     abi: MANAGER_ABI,
@@ -1406,11 +1379,11 @@ export async function setManagerRegistry(managerAddress: `0x${string}`, registry
     args: [registryAddress],
     gas: simulation.request.gas,
   })
-  console.log('📝 Registry transaction sent, hash:', hash)
+  
 
-  console.log('⏳ Waiting for registry receipt...')
+  
   await publicClient.waitForTransactionReceipt({ hash })
-  console.log(' Registry transaction confirmed')
+  
   return hash
 }
 
@@ -1424,18 +1397,14 @@ export async function fullListingFlow(opts: {
   maxSellablePercentage: number
   registryAddress: `0x${string}`
 }, onProgress?: (update: ListingProgress) => void): Promise<{ manager: `0x${string}`; txs: { deploy: `0x${string}`; approve: `0x${string}`; transfer: `0x${string}`; setRegistry: `0x${string}`; registerInRegistry: `0x${string}` } }> {
-  console.log('🌟 Starting full listing flow with options:', opts)
+  
 
   const tokenIdBI = BigInt(opts.tokenId)
   const nftPriceWei = parseEther(opts.pricePerShareEth)
   const maxPct = BigInt(opts.maxSellablePercentage)
-  console.log('🔢 Parsed values:', {
-    tokenIdBI: tokenIdBI.toString(),
-    nftPriceWei: nftPriceWei.toString(),
-    maxPct: maxPct.toString(),
-  })
+ 
 
-  console.log('📡 Step 1: Deploy - calling onProgress start')
+  
   onProgress?.({ step: 'deploy', status: 'start' })
   const { address: manager, txHash: deploy } = await deployManagerContract({
     nftContract: opts.nftContract,
@@ -1443,21 +1412,21 @@ export async function fullListingFlow(opts: {
     nftPriceWei,
     maxSellablePercentage: maxPct,
   })
-  console.log('📡 Step 1: Deploy - calling onProgress success')
+  
   onProgress?.({ step: 'deploy', status: 'success', txHash: deploy, manager })
 
-  console.log('📡 Step 2: Approve - calling onProgress start')
+  
   onProgress?.({ step: 'approve', status: 'start', manager })
   const approve = await approveNFTForManager(opts.nftContract, tokenIdBI, manager)
-  console.log('📡 Step 2: Approve - calling onProgress success')
+  
   onProgress?.({ step: 'approve', status: 'success', txHash: approve, manager })
 
  
   const publicClient = getPublicClient(config)
   const wallet = await getWalletClient(config)
-  console.log('📡 Step 3: Transfer - calling onProgress start')
+  
   onProgress?.({ step: 'transfer', status: 'start', manager })
-  console.log('🔍 Simulating transferNFTToContract...')
+  
   const transferSim = await publicClient.simulateContract({
     address: manager,
     abi: MANAGER_ABI,
@@ -1465,32 +1434,32 @@ export async function fullListingFlow(opts: {
     args: [],
     account: wallet?.account,
   })
-  console.log(' Transfer simulation successful, gas:', transferSim.request.gas?.toString())
-  console.log('📝 Sending transferNFTToContract transaction...')
+  
+  
   const transfer = await writeContract(config, {
     address: manager,
     abi: MANAGER_ABI,
     functionName: 'transferNFTToContract',
     gas: transferSim.request.gas,
   })
-  console.log('📝 Transfer transaction sent, hash:', transfer)
-  console.log('⏳ Waiting for transfer receipt...')
+  
+  
   await publicClient.waitForTransactionReceipt({ hash: transfer })
-  console.log(' Transfer transaction confirmed')
-  console.log('📡 Step 3: Transfer - calling onProgress success')
+  
+  
   onProgress?.({ step: 'transfer', status: 'success', txHash: transfer, manager })
 
-  console.log('📡 Step 4: Registry - calling onProgress start')
+  
   onProgress?.({ step: 'setRegistry', status: 'start', manager })
   const setRegistry = await setManagerRegistry(manager, opts.registryAddress)
-  console.log('📡 Step 4: Registry - calling onProgress success')
+  
   onProgress?.({ step: 'setRegistry', status: 'success', txHash: setRegistry, manager })
 
-  console.log('📡 Step 5: Registry Registration - calling onProgress start')
+  
   onProgress?.({ step: 'registerInRegistry', status: 'start', manager })
   
  
-  console.log('🔍 Getting NFT tokenURI for registry registration...')
+  
   let metadataURI = ''
   try {
     const tokenURI = await readContract(config, {
@@ -1500,7 +1469,6 @@ export async function fullListingFlow(opts: {
       args: [tokenIdBI],
     })
     metadataURI = tokenURI as string
-    console.log(' Got NFT tokenURI:', metadataURI)
   } catch (error) {
     console.warn('⚠️ Could not get NFT tokenURI, using fallback:', error)
     metadataURI = `https://nft-fallback.com/metadata/${opts.nftContract}/${opts.tokenId}`
@@ -1509,9 +1477,9 @@ export async function fullListingFlow(opts: {
  
   const { registerSharedNFT } = await import('./registry')
   const registerInRegistry = await registerSharedNFT(manager, metadataURI)
-  console.log('📡 Step 5: Registry Registration - calling onProgress success')
+  
   onProgress?.({ step: 'registerInRegistry', status: 'success', txHash: registerInRegistry, manager })
 
-  console.log('🎉 Full listing flow completed successfully!')
+  
   return { manager, txs: { deploy, approve, transfer, setRegistry, registerInRegistry } }
 }

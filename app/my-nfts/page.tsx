@@ -49,10 +49,10 @@ export default function MyNFTs() {
     
     setLoadingOwned(true)
     try {
-      console.log('🔍 Loading owned NFTs...')
+      
       const nfts = await fetchOwnedNFTs(address)
       setOwnedNFTs(nfts)
-      console.log(' Loaded owned NFTs:', nfts)
+      
     } catch (error) {
       console.error(' Error loading owned NFTs:', error)
     } finally {
@@ -65,7 +65,7 @@ export default function MyNFTs() {
     
     setLoadingShared(true)
     try {
-      console.log('🔍 Loading shared NFTs from marketplace registry...')
+      
       
       
       const { fetchActiveMarketplaceItems, REGISTRY_ADDRESS } = await import('@/lib/registry')
@@ -78,10 +78,10 @@ export default function MyNFTs() {
 
       
       const marketplaceItems = await fetchActiveMarketplaceItems(REGISTRY_ADDRESS)
-      console.log(' Loaded marketplace items:', marketplaceItems.length)
+      
 
       
-      console.log('🔍 Checking ownership percentages...')
+      
       const { getOwnershipPercentage } = await import('@/lib/manager-contract')
       
       const userSharedNFTs = []
@@ -109,7 +109,7 @@ export default function MyNFTs() {
               pricePerShare: item.pricePerShare
             }
             userSharedNFTs.push(userNFT)
-            console.log(` User owns ${ownershipPercentage}% of ${item.name} (${item.availableShares}/${item.totalShares} shares available)`)
+            
           }
         } catch (error) {
           console.warn(' Could not check ownership for manager:', item.contract, error)
@@ -117,7 +117,7 @@ export default function MyNFTs() {
       }
 
       setSharedNFTsWithOwnership(userSharedNFTs)
-      console.log(' Found', userSharedNFTs.length, 'shared NFTs with ownership')
+      
       
     } catch (error) {
       console.error(' Error loading shared NFTs:', error)
@@ -139,7 +139,7 @@ export default function MyNFTs() {
       localStorage.setItem('nft-fetching-enabled', JSON.stringify(newState))
     }
     
-    console.log(`🔄 NFT fetching ${newState ? 'enabled' : 'disabled'} and saved to localStorage`)
+    
   }
 
   const handleAddCustomContract = async () => {
@@ -147,7 +147,7 @@ export default function MyNFTs() {
     
     setLoadingOwned(true)
     try {
-      console.log('🔍 Checking custom contract:', customContract)
+      
       const contracts = customContract.split(',').map(c => c.trim()).filter(c => c.startsWith('0x'))
       
       if (contracts.length > 0) {
@@ -156,10 +156,10 @@ export default function MyNFTs() {
         for (const contractAddress of contracts) {
           const nfts = await checkContractForNFTs(contractAddress, address)
           if (nfts.length > 0) {
-            console.log(` Found ${nfts.length} NFTs in custom contract ${contractAddress}`)
+            
             setOwnedNFTs(prev => [...prev, ...nfts])
           } else {
-            console.log(` No NFTs found in custom contract ${contractAddress}`)
+            
           }
         }
         

@@ -60,7 +60,7 @@ export async function checkContractForNFTs(contractAddress: string, userAddress:
   const userNFTs: UserNFT[] = []
 
   try {
-    console.log(`Checking contract: ${contractAddress} for user: ${userAddress}`)
+    
     
     
     const balance = await readContract(config, {
@@ -71,7 +71,7 @@ export async function checkContractForNFTs(contractAddress: string, userAddress:
     })
 
     const balanceNum = Number(balance)
-    console.log(`Balance for ${contractAddress}: ${balanceNum}`)
+    
     
     if (balanceNum > 0) {
       
@@ -90,11 +90,11 @@ export async function checkContractForNFTs(contractAddress: string, userAddress:
               userNFTs.push(nft)
             }
           } catch (error) {
-            console.warn('Failed to fetch token at index', i, error)
+            // Failed to fetch token at index
           }
         }
       } catch (error) {
-        console.warn('tokenOfOwnerByIndex not supported, trying alternative method', error)
+        // tokenOfOwnerByIndex not supported, trying alternative method
         
         
         for (let tokenId = 1; tokenId <= 100 && userNFTs.length < 10; tokenId++) {
@@ -119,7 +119,7 @@ export async function checkContractForNFTs(contractAddress: string, userAddress:
       }
     }
   } catch (error) {
-    console.warn('Failed to check contract:', contractAddress, error)
+        // Failed to check contract
   }
 
   return userNFTs
@@ -154,7 +154,7 @@ async function fetchNFTDetails(contractAddress: string, tokenId: string): Promis
         metadata = { ...metadata, ...fetchedMetadata }
       }
     } catch (error) {
-      console.warn('Failed to fetch metadata for token:', tokenId, error)
+      // Failed to fetch metadata for token
     }
 
     return {
@@ -164,7 +164,7 @@ async function fetchNFTDetails(contractAddress: string, tokenId: string): Promis
       tokenURI,
     }
   } catch (error) {
-    console.warn('Failed to fetch NFT details:', error)
+    // Failed to fetch NFT details
     return null
   }
 }
@@ -174,11 +174,11 @@ export async function fetchOwnedNFTs(userAddress: string): Promise<UserNFT[]> {
   const ownedNFTs: UserNFT[] = []
 
   try {
-    console.log('🔍 Fetching owned NFTs for:', userAddress)
+    
     
     
     try {
-      console.log('📡 Using Moralis API...')
+      
       
       const moralisApiKey = process.env.NEXT_PUBLIC_MORALIS_API_KEY
       if (!moralisApiKey) {
@@ -196,7 +196,7 @@ export async function fetchOwnedNFTs(userAddress: string): Promise<UserNFT[]> {
 
       if (response.ok) {
         const data = await response.json()
-        console.log(' Moralis response:', data)
+        
         
         if (data.result && data.result.length > 0) {
           for (const nft of data.result.slice(0, 50)) { 
@@ -220,7 +220,7 @@ export async function fetchOwnedNFTs(userAddress: string): Promise<UserNFT[]> {
                     attributes: parsedMetadata.attributes || []
                   }
                 } catch (parseError) {
-                  console.warn('Failed to parse metadata JSON:', parseError)
+                  // Failed to parse metadata JSON
                 }
               }
 
@@ -231,24 +231,24 @@ export async function fetchOwnedNFTs(userAddress: string): Promise<UserNFT[]> {
                 tokenURI: nft.token_uri || '',
               })
             } catch (error) {
-              console.warn(' Failed to process Moralis NFT:', error)
+              // Failed to process Moralis NFT
             }
           }
           
-          console.log(` Found ${ownedNFTs.length} NFTs via Moralis`)
+          
           return ownedNFTs
         } else {
-          console.log('📭 Moralis returned no NFTs')
+          
         }
       } else {
-        console.log(' Moralis API failed:', response.status, await response.text())
+        
       }
     } catch (error) {
-      console.warn(' Moralis API error:', error)
+      // Moralis API error
     }
 
     
-    console.log('📡 Falling back to contract checking...')
+    
     
     const SEPOLIA_NFT_CONTRACTS = [
       '0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844', 
@@ -258,28 +258,28 @@ export async function fetchOwnedNFTs(userAddress: string): Promise<UserNFT[]> {
     ]
 
     for (const contractAddress of SEPOLIA_NFT_CONTRACTS) {
-      console.log(`🔍 Checking contract: ${contractAddress}`)
+      
       const nfts = await checkContractForNFTs(contractAddress, userAddress)
       if (nfts.length > 0) {
-        console.log(` Found ${nfts.length} NFTs in contract ${contractAddress}`)
+        
         ownedNFTs.push(...nfts)
       }
     }
 
   } catch (error) {
-    console.error(' Error fetching owned NFTs:', error)
+    // Error fetching owned NFTs
   }
 
-  console.log(`🎯 Total owned NFTs found: ${ownedNFTs.length}`)
+  
   
   
   if (ownedNFTs.length === 0) {
-    console.log('🤔 No NFTs found. This could mean:')
-    console.log('  1. You don\'t own any NFTs on Sepolia testnet')
-    console.log('  2. Your NFTs are on different contracts not checked yet')
-    console.log('  3. There might be an API issue')
-    console.log('  💡 Try using the "Add Contract" feature with your specific NFT contract address')
-    console.log('  🔍 Check your wallet on https://sepolia.etherscan.io/address/' + userAddress)
+    
+    
+    
+    
+    
+    
   }
   
   return ownedNFTs
@@ -290,9 +290,9 @@ export async function fetchSharedNFTs(userAddress: string): Promise<UserNFT[]> {
   const sharedNFTs: UserNFT[] = []
 
   try {
-    console.log('🔍 Fetching shared NFTs via registry for:', userAddress)
+    
     if (!REGISTRY_ADDRESS) {
-      console.warn(' Registry address not configured (NEXT_PUBLIC_REGISTRY_ADDRESS)')
+        // Registry address not configured
       return []
     }
 
@@ -395,14 +395,14 @@ export async function fetchSharedNFTs(userAddress: string): Promise<UserNFT[]> {
           tokenURI: entry.metadataURI || '',
         })
       } catch (err) {
-        console.warn('Failed to process shared entry', entry.managerContract, err)
+          // Failed to process shared entry
       }
     }))
   } catch (error) {
-    console.error(' Error fetching shared NFTs:', error)
+    // Error fetching shared NFTs
   }
 
-  console.log(`🎯 Total shared NFTs found: ${sharedNFTs.length}`)
+  
   return sharedNFTs
 }
 
@@ -427,7 +427,7 @@ export async function fetchUserNFTs(userAddress: string, customContracts: string
 export async function transferNFTToManager(contractAddress: string, tokenId: string) {
   
   
-  console.log(`Transferring NFT ${tokenId} from contract ${contractAddress} to manager ${MANAGER_CONTRACT_ADDRESS}`)
+  
   
   
   
