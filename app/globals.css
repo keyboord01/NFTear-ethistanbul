@@ -1,8 +1,27 @@
 @import "tailwindcss";
 
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --gray-950: #030712;
+  --space-gray-light: #8e8e93;
+  --space-gray: #636366;
+  --space-gray-dark: #48484a;
+  --space-gray-darker: #2c2c2e;
+  --space-gray-darkest: #1c1c1e;
+  --accent-orange: #186F47;
+  --accent-orange-hover: #238056;
 }
 
 @theme inline {
@@ -12,15 +31,346 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  background: #000000;
+  color: #ffffff;
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.abstract-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.abstract-bg::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255, 20, 147, 0.05) 0%, rgba(138, 43, 226, 0.05) 30%, rgba(75, 0, 130, 0.05) 60%, transparent 80%);
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  animation: float 20s ease-in-out infinite;
+  filter: blur(60px);
+}
+
+.abstract-bg::after {
+  content: '';
+  position: absolute;
+  bottom: 15%;
+  right: 15%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(255, 165, 0, 0.05) 0%, rgba(255, 69, 0, 0.05) 30%, rgba(220, 20, 60, 0.05) 60%, transparent 80%);
+  border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+  animation: float 25s ease-in-out infinite reverse;
+  filter: blur(70px);
+}
+
+.floating-shapes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.shape {
+  position: absolute;
+  animation: drift 35s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+.shape:nth-child(1) {
+  top: 20%;
+  left: 80%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, rgba(0, 191, 255, 0.1) 50%, transparent 80%);
+  border-radius: 30px;
+  animation-delay: 0s;
+  transform: rotate(25deg);
+  filter: blur(40px);
+}
+
+.shape:nth-child(2) {
+  top: 60%;
+  left: 5%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(50, 205, 50, 0.1) 0%, rgba(34, 139, 34, 0.1) 50%, transparent 80%);
+  border-radius: 50%;
+  animation-delay: 7s;
+  filter: blur(50px);
+}
+
+.shape:nth-child(3) {
+  top: 35%;
+  left: 70%;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(255, 20, 147, 0.12) 0%, rgba(199, 21, 133, 0.2) 50%, transparent 80%);
+  border-radius: 25px;
+  animation-delay: 14s;
+  transform: rotate(-30deg);
+  filter: blur(45px);
+}
+
+.shape:nth-child(4) {
+  top: 15%;
+  left: 20%;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.12) 0%, rgba(255, 165, 0, 0.2) 50%, transparent 80%);
+  border-radius: 50%;
+  animation-delay: 21s;
+  filter: blur(35px);
+}
+
+.shape:nth-child(5) {
+  top: 75%;
+  left: 45%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.05) 0%, rgba(75, 0, 130, 0.05) 50%, transparent 80%);
+  border-radius: 35px;
+  animation-delay: 28s;
+  transform: rotate(45deg);
+  filter: blur(55px);
+}
+
+.shape:nth-child(6) {
+  top: 50%;
+  left: 85%;
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(255, 69, 0, 0.05) 0%, rgba(255, 99, 71, 0.05) 50%, transparent 80%);
+  border-radius: 50%;
+  animation-delay: 35s;
+  filter: blur(40px);
+}
+
+
+.bg-blob-1 {
+  position: fixed;
+  top: -20%;
+  right: -20%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(72, 61, 139, 0.05) 0%, rgba(123, 104, 238, 0.05) 40%, rgba(147, 112, 219, 0.05) 60%, transparent 80%);
+  border-radius: 50%;
+  animation: pulse 18s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+}
+
+.bg-blob-2 {
+  position: fixed;
+  bottom: -25%;
+  left: -25%;
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(circle, rgba(255, 20, 147, 0.05) 0%, rgba(255, 105, 180, 0.05) 40%, rgba(255, 182, 193, 0.05) 60%, transparent 80%);
+  border-radius: 50%;
+  animation: pulse 22s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(90px);
+}
+
+.bg-blob-3 {
+  position: fixed;
+  top: 40%;
+  left: 30%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 255, 127, 0.05) 0%, rgba(50, 205, 50, 0.05) 40%, rgba(144, 238, 144, 0.05) 60%, transparent 80%);
+  border-radius: 50%;
+  animation: pulse 26s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(75px);
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg) scale(1); 
+  }
+  33% { 
+    transform: translateY(-30px) rotate(120deg) scale(1.1); 
+  }
+  66% { 
+    transform: translateY(15px) rotate(240deg) scale(0.9); 
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes drift {
+  0%, 100% { 
+    transform: translateX(0px) translateY(0px) rotate(0deg); 
+  }
+  25% { 
+    transform: translateX(20px) translateY(-15px) rotate(90deg); 
+  }
+  50% { 
+    transform: translateX(-10px) translateY(10px) rotate(180deg); 
+  }
+  75% { 
+    transform: translateX(-20px) translateY(-10px) rotate(270deg); 
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.3; 
+  }
+  50% { 
+    transform: scale(1.1); 
+    opacity: 0.1; 
+  }
+}
+
+.card {
+  background: #00000057;
+  border: 1px solid var(--space-gray-darker);
+  border-radius: 12px;
+  
+}
+
+
+
+
+.btn-primary {
+  background: var(--accent-orange);
+  color: white;
+  border: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--accent-orange-hover);
+  cursor: pointer;
+}
+
+.btn-orange {
+  background: var(--accent-orange);
+  color: white;
+  border: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-orange:hover {
+  background: var(--accent-orange-hover);
+}
+
+.btn-secondary {
+  background: var(--space-gray-darker);
+  color: white;
+  border: 1px solid var(--space-gray-dark);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--space-gray-dark);
+  border-color: var(--space-gray);
+  cursor: pointer;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--space-gray-light);
+  border: 1px solid var(--space-gray-dark);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  color: white;
+  border-color: var(--space-gray);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+}
+
+
+.text-primary {
+  color: #ffffff;
+}
+
+.text-secondary {
+  color: var(--space-gray-light);
+}
+
+.text-tertiary {
+  color: var(--space-gray);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--space-gray-darkest);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--space-gray-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--space-gray);
+}
+
+.nft-card {
+  transition: all 0.2s ease;
+}
+
+
+input, select, textarea {
+  background: var(--space-gray-darkest);
+  border: 1px solid var(--space-gray-dark);
+  color: white;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.border-gray {
+  border-color: var(--space-gray-dark);
+}
+
+.bg-surface {
+  background: var(--space-gray-darkest);
+}
+
+.bg-surface-hover {
+  background: var(--space-gray-darker);
+}
+
+.bg-elevated {
+  background: var(--space-gray-darker);
 }
