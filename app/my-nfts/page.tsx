@@ -487,7 +487,7 @@ export default function MyNFTs() {
                         
                         
                         <div className="absolute top-3 right-3 bg-emerald-600 text-white px-2 py-1 rounded text-xs font-semibold">
-                          {nft.ownershipPercentage || 0}% Owned
+                          {nft.availableShares || 0}% Owned
                         </div>
                         
                         <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" />
